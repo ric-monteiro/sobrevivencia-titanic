@@ -72,7 +72,8 @@ O projeto inclui várias visualizações para entender os dados e o desempenho d
 ![alt text](/assets/image-2.png)
 * Histogramas: Distribuição de `Age` e `Fare` em relação à sobrevivência.
 
-![Distribuição de Idade por Status de Sobrevivência](/assets/image-3.png) ![Distribuição de Tarifa por Status de Sobrevivência](/assets/image-4.png)
+![Distribuição de Idade por Status de Sobrevivência](/assets/image-3.png)
+![Distribuição de Tarifa por Status de Sobrevivência](/assets/image-4.png)
 * Mapa de Calor: Representação visual da Matriz de Confusão do modelo.
 
 ![alt text](/assets/image-5.png)
