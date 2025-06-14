@@ -1,103 +1,99 @@
-## Classificação de Sobrevivência no Titanic com AdaBoost
+## Titanic Survival Classification with AdaBoost
 
-Este projeto analisa os dados históricos do naufrágio do Titanic para prever a sobrevivência de passageiros, com base em características como sexo, idade, classe social, entre outros fatores. Foi utilizado o algoritmo **AdaBoost** com uma árvore de decisão como estimador base e todo o pipeline é construído com ferramentas de **machine learning supervisionado**, incluindo pré-processamento, engenharia de atributos e avaliação de desempenho.
+This project analyzes historical data from the Titanic shipwreck to predict passenger survival based on characteristics such as gender, age, social class, among other factors. The **AdaBoost** algorithm was used with a decision tree as the base estimator, and the entire pipeline is built with **supervised machine learning** tools, including preprocessing, feature engineering, and performance evaluation.
 
----
+-----
 
-### Sobre o Conjunto de Dados
+### About the Dataset
 
-Os dados são provenientes da [competição Titanic do Kaggle](https://www.kaggle.com/competitions/titanic):
+The data comes from the [Kaggle Titanic competition](https://www.kaggle.com/competitions/titanic):
 
-* `train.csv`: dados rotulados (com a coluna `Survived`)
-* `test.csv`: dados não rotulados, usados para previsão
+  * `train.csv`: labeled data (with the `Survived` column)
+  * `test.csv`: unlabeled data, used for prediction
 
-**Atributos relevantes:**
+**Relevant Attributes:**
 
-* `Pclass`: Classe do passageiro (1ª, 2ª, 3ª)
-* `Sex`: Sexo do passageiro
-* `Age`: Idade
-* `SibSp`: Número de irmãos/cônjuges a bordo
-* `Parch`: Número de pais/filhos a bordo
-* `Fare`: Valor da passagem
-* `Embarked`: Porto de embarque (C = Cherbourg, Q = Queenstown, S = Southampton)
+  * `Pclass`: Passenger class (1st, 2nd, 3rd)
+  * `Sex`: Passenger's gender
+  * `Age`: Age
+  * `SibSp`: Number of siblings/spouses aboard
+  * `Parch`: Number of parents/children aboard
+  * `Fare`: Ticket fare
+  * `Embarked`: Port of embarkation (C = Cherbourg, Q = Queenstown, S = Southampton)
 
----
+-----
 
-### Etapas do Projeto
+### Project Steps
 
-#### 1. Carregamento e Combinação dos Dados
+#### 1\. Data Loading and Combination
 
-* Os dados de treino e teste são combinados temporariamente para facilitar o pré-processamento.
-* A variável alvo (`Survived`) é separada para ser usada apenas nos dados de treino.
+  * Training and test data are temporarily combined to facilitate preprocessing.
+  * The target variable (`Survived`) is separated to be used only with the training data.
 
-#### 2. Tratamento de Valores Ausentes
+#### 2\. Handling Missing Values
 
-* Preenchimento de:
+  * Filling:
+      * `Age` and `Fare`: with the median.
+      * `Embarked`: with the most frequent value ('S').
 
-  * `Age` e `Fare`: com a mediana.
-  * `Embarked`: com o valor mais frequente ('S').
+#### 3\. Feature Engineering
 
-#### 3. Engenharia de Features
+  * Conversion of categorical variables to numerical with **OneHotEncoder** and **LabelEncoder**.
+  * Normalization of numerical variables with **StandardScaler**.
+  * Features created or reorganized:
+      * `Title`: extracted from the name (Mr, Mrs, Miss, etc.)
+      * `FamilySize`: sum of `SibSp` and `Parch` + 1
+      * `IsAlone`: identifies passengers who traveled alone
+      * Binning of age and fare into ranges
 
-* Conversão de variáveis categóricas em numéricas com **OneHotEncoder** e **LabelEncoder**.
-* Normalização de variáveis numéricas com **StandardScaler**.
-* Features criadas ou reorganizadas:
+#### 4\. Pipeline Construction
 
-  * `Title`: título extraído do nome (Mr, Mrs, Miss, etc.)
-  * `FamilySize`: soma de `SibSp` e `Parch` + 1
-  * `IsAlone`: identifica passageiros que viajaram sozinhos
-  * Binagem de idade e tarifa em faixas
+  * Use of `Pipeline` and `ColumnTransformer` to organize the preprocessing and modeling workflow.
+  * Application of an `AdaBoostClassifier` with `DecisionTreeClassifier` as the base estimator.
+  * Hyperparameter tuning with `GridSearchCV`.
 
-#### 4. Construção do Pipeline
+#### 5\. Model Evaluation
 
-* Utilização do `Pipeline` e `ColumnTransformer` para organizar o fluxo de pré-processamento e modelagem.
-* Aplicação de um `AdaBoostClassifier` com `DecisionTreeClassifier` como estimador base.
-* Ajuste de hiperparâmetros com `GridSearchCV`.
+  * Accuracy on training/test data
+  * Classification report (`classification_report`)
+  * Confusion matrix
+  * ROC curve and AUC calculation
 
-#### 5. Avaliação do Modelo
+-----
 
-* Acurácia nos dados de treino/teste
-* Relatório de classificação (`classification_report`)
-* Matriz de confusão
-* Curva ROC e cálculo da AUC
+### Charts
 
----
+The project includes some visualizations to help understand the data and the model's performance:
 
-### Visualizações Chave
+  * Bar Charts: Count of survivors by Sex and Pclass.
+  ![alt text](/assets/image-2.png)
 
-O projeto inclui várias visualizações para entender os dados e o desempenho do modelo:
+  * Histograms: Distribution of `Age` and `Fare` in relation to survival.
+  ![Distribution of Age in Relation to Survival](/assets/image-3.png)
+  ![Distribution of Fare in Relation to Survival](/assets/image-4.png)
 
-* Gráficos de Barras: Contagem de sobreviventes por Sex e Pclass.
+  * Heatmap: Visual representation of the model's Confusion Matrix.
+  ![alt text](/assets/image-5.png)
+  
+  * ROC Curve: Evaluates the model's discriminatory ability, with the AUC value.
+  ![alt text](/assets/image-6.png)
 
-![alt text](/assets/image-2.png)
-* Histogramas: Distribuição de `Age` e `Fare` em relação à sobrevivência.
+  * Feature Importance Plot: Highlights the most influential features for the model's prediction.
+  ![alt text](/assets/image-7.png)
 
-![Distribuição de Idade por Status de Sobrevivência](/assets/image-3.png)
-![Distribuição de Tarifa por Status de Sobrevivência](/assets/image-4.png)
-* Mapa de Calor: Representação visual da Matriz de Confusão do modelo.
+-----
 
-![alt text](/assets/image-5.png)
-* Curva ROC: Avalia a capacidade discriminatória do modelo, com o valor AUC.
+### Technologies Used
 
-![alt text](/assets/image-6.png)
-* Gráfico de Importância das Features: Destaca as features mais influentes para a previsão do modelo.
+  * Python 3
+  * Libraries:
+      * `pandas`, `numpy` – data manipulation
+      * `matplotlib`, `seaborn` – visualization
+      * `scikit-learn` – machine learning
 
-![alt text](/assets/image-7.png)
+-----
 
----
+### Expansion Ideas
 
-### Tecnologias Utilizadas
-
-* Python 3
-* Bibliotecas:
-
-  * `pandas`, `numpy` – manipulação de dados
-  * `matplotlib`, `seaborn` – visualização
-  * `scikit-learn` – machine learning
-
----
-
-### Ideias de Expansão
-
-* Comparar AdaBoost com outros algoritmos (Random Forest, XGBoost)
-* Utilizar `SHAP` ou `eli5` para explicar as decisões do modelo
+  * Compare AdaBoost with other algorithms (Random Forest, XGBoost)
+  * Use `SHAP` or `eli5` to explain the model's decisions
